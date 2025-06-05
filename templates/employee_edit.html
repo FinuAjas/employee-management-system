@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Edit Employee</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in fields %}
+                    <div class="mb-3">
+                        <label for="field_{{ field.id }}" class="form-label">{{ field.label }}</label>
+                        {% if field.field_type == 'text' %}
+                            <input type="text" class="form-control" id="field_{{ field.id }}" name="field_{{ field.id }}" 
+                                   value="{{ employee.fields|get_item:field.label|default:'' }}" {% if field.required %}required{% endif %}>
+                        {% elif field.field_type == 'number' %}
+                            <input type="number" class="form-control" id="field_{{ field.id }}" name="field_{{ field.id }}" 
+                                   value="{{ employee.fields|get_item:field.label|default:'' }}" {% if field.required %}required{% endif %}>
+                        {% elif field.field_type == 'date' %}
+                            <input type="date" class="form-control" id="field_{{ field.id }}" name="field_{{ field.id }}" 
+                                   value="{{ employee.fields|get_item:field.label|default:'' }}" {% if field.required %}required{% endif %}>
+                        {% elif field.field_type == 'email' %}
+                            <input type="email" class="form-control" id="field_{{ field.id }}" name="field_{{ field.id }}" 
+                                   value="{{ employee.fields|get_item:field.label|default:'' }}" {% if field.required %}required{% endif %}>
+                        {% elif field.field_type == 'password' %}
+                            <input type="password" class="form-control" id="field_{{ field.id }}" name="field_{{ field.id }}" 
+                                   {% if field.required %}required{% endif %}>
+                        {% elif field.field_type == 'textarea' %}
+                            <textarea class="form-control" id="field_{{ field.id }}" name="field_{{ field.id }}" 
+                                      {% if field.required %}required{% endif %}>{{ employee.fields|get_item:field.label|default:'' }}</textarea>
+                        {% elif field.field_type == 'checkbox' %}
+                            <input type="checkbox" class="form-check-input" id="field_{{ field.id }}" name="field_{{ field.id }}" 
+                                   {% if employee.fields|get_item:field.label %}checked{% endif %}>
+                        {% elif field.field_type == 'select' %}
+                            <select class="form-select" id="field_{{ field.id }}" name="field_{{ field.id }}" {% if field.required %}required{% endif %}>
+                                <option value="">Select an option</option>
+                                <option value="option1" {% if employee.fields|get_item:field.label == 'option1' %}selected{% endif %}>Option 1</option>
+                                <option value="option2" {% if employee.fields|get_item:field.label == 'option2' %}selected{% endif %}>Option 2</option>
+                                <option value="option3" {% if employee.fields|get_item:field.label == 'option3' %}selected{% endif %}>Option 3</option>
+                            </select>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Update Employee</button>
+                <a href="{% url 'employee_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
