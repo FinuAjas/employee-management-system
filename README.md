@@ -23,3 +23,6 @@
 
 6. Run development server:
 `python manage.py runserver`
+
+7. Login URL in local host
+Go to http://127.0.0.1:8000/login/
